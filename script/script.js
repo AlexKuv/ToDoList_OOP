@@ -66,11 +66,22 @@ generateKey() {
 }
 
 todoEdit(elem) {
- const span = elem.querySelector('.text-todo');
-  span.setAttribute('contenteditable', true);
-  span.focus();
-
-}
+    const span = elem.querySelector('.text-todo');
+    if (span.contentEditable !== "true") {
+      span.contentEditable = "true";
+      span.focus();
+    } else {
+      const newTodo = {
+        value: span.textContent,
+        completed: this.todoData.get(elem.key).completed,
+        key: elem.key
+      };
+      this.todoData.delete(elem.key);
+      this.todoData.set(newTodo.key, newTodo);
+      span.contentEditable = "false";
+      this.render();
+    }
+  }
 
 deleteItem(elem) {
   this.todoData.forEach(item => {
