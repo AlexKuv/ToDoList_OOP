@@ -106,12 +106,12 @@ handler() {
         this.animate(element);
         setTimeout(()=>{
           this.deleteItem(element);
-        },1000);
+        },900);
       } else if (target.matches('.todo-complete')) {
          this.animate(element);
         setTimeout(()=>{
           this.completedItem(element);
-        },1000);
+        },900);
           
       } else if (target.matches('.todo-edit')){
         this.todoEdit(element);
