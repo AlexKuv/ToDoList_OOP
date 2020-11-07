@@ -229,3 +229,13 @@ body {
     font-size: 12px;
     color: #aaa;
 }
+
+@keyframes scale-animation-opacity {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
