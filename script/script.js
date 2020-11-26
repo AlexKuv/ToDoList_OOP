@@ -28,6 +28,7 @@ createItem(todo) {
  li.insertAdjacentHTML( "beforeend",`
    <span class="text-todo">${todo.value}</span>
     <div class="todo-buttons">
+       <button class="todo-edit"></button>
        <button class="todo-remove"></button>
        <button class="todo-complete"></button>
     </div> 
@@ -38,6 +39,7 @@ createItem(todo) {
    } else {
     this.todoList.append(li);
     }
+    
 }
 
 addTodo(e) {
@@ -63,6 +65,24 @@ generateKey() {
  );
 }
 
+todoEdit(elem) {
+    const span = elem.querySelector('.text-todo');
+    if (span.contentEditable !== "true") {
+      span.contentEditable = "true";
+      span.focus();
+    } else {
+      const newTodo = {
+        value: span.textContent,
+        completed: this.todoData.get(elem.key).completed,
+        key: elem.key
+      };
+      this.todoData.delete(elem.key);
+      this.todoData.set(newTodo.key, newTodo);
+      span.contentEditable = "false";
+      this.render();
+    }
+  }
+
 deleteItem(elem) {
   this.todoData.forEach(item => {
       if (elem.key === item.key) {
@@ -85,15 +105,28 @@ completedItem(elem) {
 this.render();
 }
 
+animate(elem) {
+  elem.style.animation  = "scale-animation-opacity 1s ease";
+}
+
 handler() {
- document.querySelector(".todo-container").addEventListener("click", elem => {
+ document.querySelector('.todo-container').addEventListener("click", elem => {
     const target = elem.target;
     const element = target.parentNode.parentNode;
-      if (target.matches(".todo-remove")) { 
-        this.deleteItem(element);
-      } else if (target.matches(".todo-complete")) {
-        this.completedItem(element);
-      } 
+      if (target.matches('.todo-remove')) { 
+        this.animate(element);
+        setTimeout(()=>{
+          this.deleteItem(element);
+        },900);
+      } else if (target.matches('.todo-complete')) {
+         this.animate(element);
+        setTimeout(()=>{
+          this.completedItem(element);
+        },900);
+          
+      } else if (target.matches('.todo-edit')){
+        this.todoEdit(element);
+      }
   });
 }
 
